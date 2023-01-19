@@ -9,6 +9,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -26,6 +27,12 @@ public class BasePage {
             Duration.ofSeconds(Long.parseLong(props.getProperty(PropConst.EXPECTED_COND_TIMEOUT))),
             Duration.ofSeconds(Long.parseLong(props.getProperty(PropConst.EXPECTED_COND_SLEEP))));
 
+    @FindBy(xpath = "//*[contains(@class, 'presearch__input')]")
+    protected WebElement searchField;
+
+    @FindBy(xpath = "//*[contains(@class,'presearch__icon-search')]")
+    protected WebElement presearchButton;
+
     public BasePage() {
         PageFactory.initElements(driverManager.getDriver(), this);
     }
@@ -41,8 +48,6 @@ public class BasePage {
     protected void inputField(WebElement element, String value) {
         element.clear();
         element.sendKeys(value);
-//        boolean checkFlag = wait.until(ExpectedConditions.attributeContains(element, "value", value));
-//        Assertions.assertTrue(checkFlag, "Поле было заполнено некорректно");
     }
 
     protected boolean isOpenPage(WebElement webElement) {
@@ -59,5 +64,9 @@ public class BasePage {
 
     protected void scrollToElementJs(WebElement element) {
         js.executeScript("arguments[0].scrollIntoView(true);", element);
+    }
+
+    protected void clickButtonJs(WebElement webElement) {
+        js.executeScript("arguments[0].click();", waitUtilElementToBeClickable(webElement));
     }
 }

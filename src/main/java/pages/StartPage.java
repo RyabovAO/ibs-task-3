@@ -9,12 +9,6 @@ public class StartPage extends BasePage{
     @FindBy(xpath = "//*[@class='homepage']")
     private WebElement pageLocator;
 
-    @FindBy(xpath = "//*[contains(@class, 'presearch__input')]")
-    private WebElement searchField;
-
-    @FindBy(xpath = "//*[contains(@class,'presearch__icon-search')]")
-    private WebElement presearchButton;
-
     public StartPage searchProduct(String prod) {
         inputField(searchField, prod);
         return this;
