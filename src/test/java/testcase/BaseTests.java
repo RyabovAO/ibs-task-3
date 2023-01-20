@@ -28,6 +28,6 @@ public class BaseTests {
 
     @AfterAll
     public static void afterAll() {
-     // InitFramework.quitFramework();
+      InitFramework.quitFramework();
     }
 }

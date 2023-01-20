@@ -4,8 +4,6 @@ import constants.PropConst;
 import managers.DriverManager;
 import managers.PageManager;
 import managers.TestPropManager;
-import org.junit.jupiter.api.Assertions;
-import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -13,7 +11,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
+import products.AppleAirPods;
+import products.IPhone;
 import java.time.Duration;
 
 public class BasePage {
@@ -21,11 +20,12 @@ public class BasePage {
     protected DriverManager driverManager = DriverManager.getInstance();
     protected PageManager pageManager = PageManager.getInstance();
     protected Actions action = new Actions(driverManager.getDriver());
-    protected JavascriptExecutor js = (JavascriptExecutor) driverManager.getDriver();
     private final TestPropManager props = TestPropManager.getInstance();
     protected WebDriverWait wait = new WebDriverWait(driverManager.getDriver(),
             Duration.ofSeconds(Long.parseLong(props.getProperty(PropConst.EXPECTED_COND_TIMEOUT))),
             Duration.ofSeconds(Long.parseLong(props.getProperty(PropConst.EXPECTED_COND_SLEEP))));
+    protected static IPhone iPhone = new IPhone();
+    protected static AppleAirPods appleAirPods = new AppleAirPods();
 
     @FindBy(xpath = "//*[contains(@class, 'presearch__input')]")
     protected WebElement searchField;
@@ -54,19 +54,12 @@ public class BasePage {
         return webElement.isDisplayed();
     }
 
-    protected String getElementText(WebElement webElement) {
-        return webElement.getText();
+    protected Integer getElementTextByInt(WebElement webElement) {
+        return Integer.parseInt(webElement.getText().replaceAll("\\D", ""));
     }
 
     protected void moveToElement(WebElement webElement) {
         action.moveToElement(webElement).perform();
     }
 
-    protected void scrollToElementJs(WebElement element) {
-        js.executeScript("arguments[0].scrollIntoView(true);", element);
-    }
-
-    protected void clickButtonJs(WebElement webElement) {
-        js.executeScript("arguments[0].click();", waitUtilElementToBeClickable(webElement));
-    }
 }

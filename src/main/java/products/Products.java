@@ -7,4 +7,5 @@ import lombok.Setter;
 @Setter
 public abstract class Products {
     protected int price;
+
 }

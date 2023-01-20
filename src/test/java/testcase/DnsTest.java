@@ -11,8 +11,9 @@ public class DnsTest extends BaseTests{
                 .checkStartPage()
                 .searchProduct("Iphone")
                 .clickPresearchButton()
-                .findProductByArticle("5072935") //5072935  5082658
-                .checkProductPage("5072935")
+                .checkProductListPage()
+                .findProductOnAllPage("5082658")//5072935 - на первой стр,  5082658 - на 2й стр
+                .checkProductPage("5082658")
                 .getPriceProduct(ProductsName.IPHONE)
                 .chooseAdditional("Гарантия")
                 .chooseGuarantee()
@@ -20,7 +21,17 @@ public class DnsTest extends BaseTests{
                 .getGuaranteePrice()
                 .clickBuyButton()
                 .searchProduct("Apple AirPods Pro 2")
-                .clickPresearchButton();
-
+                .clickPresearchButton()
+                .getPriceProduct(ProductsName.AIRPODS)
+                .clickBuyButton()
+                .checkBasketPrice()
+                .clickBasketButton()
+                .checkIphoneGuarantee()
+                .checkProductPriceAndSum()
+                .deleteProduct("Apple AirPods Pro 2")
+                .isProductDelete("Apple AirPods Pro 2")
+                .isCorrectSum()
+                .clickCountButtonPlus(3)
+                .clickRestoreRemovedButton(3);
     }
 }

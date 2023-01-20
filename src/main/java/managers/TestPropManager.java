@@ -28,7 +28,7 @@ public class TestPropManager {
     private void loadApplicationProperties() {
         try {
             properties.load(new FileInputStream(FILE_PATH +
-                            System.getProperty(PROP_FILE, FILE_NAME) + FILE_PERMISSION));
+                    System.getProperty(PROP_FILE, FILE_NAME) + FILE_PERMISSION));
         } catch (IOException e) {
             e.printStackTrace();
         }

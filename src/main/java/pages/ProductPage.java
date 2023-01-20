@@ -4,15 +4,9 @@ import managers.ProductsName;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import products.AppleAirPods;
-import products.IPhone;
-
 import java.util.List;
 
 public class ProductPage extends BasePage {
-
-    private IPhone iPhone = new IPhone();
-    private AppleAirPods appleAirPods = new AppleAirPods();
 
     @FindBy(xpath = "//*[contains(@class, '__code')]")
     private WebElement productCode;
@@ -38,6 +32,12 @@ public class ProductPage extends BasePage {
     @FindBy(xpath = "//*[contains(@class,'product-card-top__buy')]//button[contains(@class,'buy-btn')]")
     private WebElement buyButton;
 
+    @FindBy(xpath = "//*[contains(@class, '-price cart-link-counter__price')]")
+    private WebElement priceBasket;
+
+    @FindBy(xpath = "//*[@data-redirect = 'https://www.dns-shop.ru/cart/']")
+    private WebElement dataRedir;
+
 
     public ProductPage checkProductPage(String article) {
         String code = productCode.getText().replaceAll("\\D", "");
@@ -47,9 +47,7 @@ public class ProductPage extends BasePage {
 
     public ProductPage getPriceProduct(ProductsName productName) {
         waitUtilElementToBeClickable(priceProduct);
-        String text = priceProduct.getText();
-        text = text.replaceAll(" ", "").replaceAll("₽", "");
-        int price = Integer.parseInt(text);
+        int price = getElementTextByInt(priceProduct);
         switch (productName) {
             case IPHONE:
                 iPhone.setPrice(price);
@@ -57,13 +55,14 @@ public class ProductPage extends BasePage {
             case AIRPODS:
                 appleAirPods.setPrice(price);
                 break;
-            default: Assertions.fail("Цена не найдена");
+            default:
+                Assertions.fail("Цена не найдена");
         }
         return this;
     }
 
     public ProductPage getGuaranteePrice() {
-        iPhone.setGuaranteePrice(Integer.parseInt(guarantee.getText().replaceAll("\\D", "")));
+        iPhone.setGuaranteePrice(getElementTextByInt(guarantee));
         return this;
     }
 
@@ -104,5 +103,18 @@ public class ProductPage extends BasePage {
     public ProductPage clickPresearchButton() {
         presearchButton.click();
         return this;
+    }
+
+    public ProductPage checkBasketPrice() {
+        waitUtilElementToBeVisible(dataRedir);
+        int basketPrice = getElementTextByInt(priceBasket);
+        Assertions.assertEquals(basketPrice, iPhone.getPrice() + iPhone.getGuaranteePrice() + appleAirPods.getPrice(),
+                "Сумма товаров в корзине не совпадает");
+        return this;
+    }
+
+    public BasketPage clickBasketButton() {
+        priceBasket.click();
+        return pageManager.getBasketPage();
     }
 }

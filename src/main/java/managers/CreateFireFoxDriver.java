@@ -6,7 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
-public class CreateFireFoxDriver implements IDriverCreate{
+public class CreateFireFoxDriver implements IDriverCreate {
     @Override
     public WebDriver create() {
         WebDriverManager.firefoxdriver().setup();
